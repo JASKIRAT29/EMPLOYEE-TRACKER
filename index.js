@@ -5,118 +5,109 @@ const cTable = require('console.table');
 
 // Connect to database
 const connection = mysql.createConnection(
-    {
-      host: 'localhost',
-      // MySQL username,
-      user: 'root',
-      // TODO: Add MySQL password here
-      password: 'Thechamp@1',
-      database: 'employee_db'
-    },
-    console.log(`Connected to the employee_trackerdb database.`)
-  );
+  {
+    host: 'localhost',
+    // MySQL username,
+    user: 'root',
+    // TODO: Add MySQL password here
+    password: 'Thechamp@1',
+    database: 'employee_db'
+  },
+  console.log(`Connected to the employee_trackerdb database.`)
+);
 
-  connection.connect(function(err) {
-    if (err) throw err
-    console.log("Connected as Id" + connection.threadId)
-    startPrompt();
+connection.connect(function (err) {
+  if (err) throw err
+  console.log("Connected as Id" + connection.threadId)
+  startPrompt();
 });
 function startPrompt() {
-    const startQuestion = [{
-      type: "list",
-      name: "choices",
-      message: "what would you like to do?",
-      loop: false,
-      choices: [
-        "View all employees?",
-       "View all roles?",
-       "View all departments?", 
-       "add an employee", 
-       "add a role", 
-       "add a department?", 
-       "update role for an employee", 
-       "update employee's manager", 
-       "view employees by manager", 
-       "delete a department", 
-       "delete a role",
-        "delete an employee",
-        ]
-    }]
-    .then(function(result) {
-        console.log("You entered: " + result.option);
-  
-        switch (result.option) {
-          case "View all employees":
-            addEmployee();
-            break;
-          case "view all roles":
-            addRole();
-            break;
-          case "View all department":
-            addNewDepartment();
-            break;
-          case "View departments":
-            viewall(Department);
-            break;
-          case "View roles":
-            viewRoles();
-            break;
-          case "View employees":
-            viewall(Employees);
-            break;
-          case "Update employee role":
-            updateEmployee();
-            break;
-            case "add an employee":
-        addNewEmployee();
-        break;
-      case "update role for an employee":
-        updateRole();
-        break;
-      case "view employees by manager":
-        viewEmployeeByManager();
-        break;
-      case "update employee's manager":
-        updateManager();
-        break;
-      case "delete a department":
-        deleteDepartment();
-        break;
-      case "delete a role":
-        deleteRole();
-        break;
-      case "delete an employee":
-        deleteEmployee();
-        break;
-      default:
-        connection.end();
-    }
-  })
-  .catch(err => {
-    console.error(err);
-  });
+  const startQuestion = [{
+    type: "list",
+    name: "option",
+    message: "what would you like to do?",
+    choices: [
+      "View all employees",
+      "View all roles",
+      "View all departments",
+      "add an employee",
+      "add a role",
+      "add a department",
+      "update role for an employee",
+      "update employee's manager",
+      "view employees by manager",
+      "delete a department",
+      "delete a role",
+      "delete an employee",
+    ]
+  }]
+  inquirer.prompt(startQuestion)
+    .then(function (result) {
+      console.log("You entered: " + result.option);
+
+      switch (result.option) {
+        case "View all employees":
+          viewEmployee();
+          break;
+        case "view all roles":
+          viewRoles();
+          break;
+        case "View all department":
+          viewDepartment();
+          break;
+        case "Update employee role":
+          updateEmployee();
+          break;
+        case "add an employee":
+          addNewEmployee();
+          break;
+        case "update role for an employee":
+          updateRole();
+          break;
+        case "view employees by manager":
+          viewEmployeeByManager();
+          break;
+        case "update employee's manager":
+          updateManager();
+          break;
+        case "delete a department":
+          deleteDepartment();
+          break;
+        case "delete a role":
+          deleteRole();
+          break;
+        case "delete an employee":
+          deleteEmployee();
+          break;
+        default:
+          connection.end();
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
 }
 //All of the corresponding functions found below
 
 function addDepartment() {
 
 
-    inquirer.prompt({
-      
-        type: "input",
-        message: "What is the name of the department?",
-        name: "deptName"
+  inquirer.prompt({
 
-    }).then(function(answer){
+    type: "input",
+    message: "What is the name of the department?",
+    name: "deptName"
+
+  }).then(function (answer) {
 
 
 
-        connection.query("INSERT INTO department (name) VALUES (?)", [answer.deptName] , function(err, res) {
-            if (err) throw err;
-            console.table(res)
-            startScreen()
+    connection.query("INSERT INTO department (name) VALUES (?)", [answer.deptName], function (err, res) {
+      if (err) throw err;
+      console.table(res)
+      startScreen()
     })
-    })
+  })
 }
 
 
@@ -139,10 +130,10 @@ function addRole() {
         name: "deptID"
       }
     ])
-    .then(function(answer) {
+    .then(function (answer) {
 
 
-      connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptID], function(err, res) {
+      connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptID], function (err, res) {
         if (err) throw err;
         console.table(res);
         startScreen();
@@ -174,10 +165,10 @@ function addEmployee() {
         name: "managerID"
       }
     ])
-    .then(function(answer) {
+    .then(function (answer) {
 
-      
-      connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.eeFirstName, answer.eeLastName, answer.roleID, answer.managerID], function(err, res) {
+
+      connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.eeFirstName, answer.eeLastName, answer.roleID, answer.managerID], function (err, res) {
         if (err) throw err;
         console.table(res);
         startScreen();
@@ -199,9 +190,9 @@ function updateEmployee() {
         name: "updateRole"
       }
     ])
-    .then(function(answer) {
+    .then(function (answer) {
 
-      connection.query('UPDATE employee SET role_id=? WHERE first_name= ?',[answer.updateRole, answer.eeUpdate],function(err, res) {
+      connection.query('UPDATE employee SET role_id=? WHERE first_name= ?', [answer.updateRole, answer.eeUpdate], function (err, res) {
         if (err) throw err;
         console.table(res);
         startScreen();
@@ -212,7 +203,7 @@ function updateEmployee() {
 function viewDepartment() {
   // select from the db
   let query = "SELECT * FROM department";
-  connection.query(query, function(err, res) {
+  connection.query(query, function (err, res) {
     if (err) throw err;
     console.table(res);
     startScreen();
@@ -222,20 +213,20 @@ function viewDepartment() {
 function viewRoles() {
   // select from the db
   let query = "SELECT * FROM role";
-  connection.query(query, function(err, res) {
+  connection.query(query, function (err, res) {
     if (err) throw err;
     console.table(res);
     startScreen();
-  }); 
+  });
 }
 
-function viewEmployees() {
+function viewEmployee() {
   // select from the db
   let query = "SELECT * FROM employee";
-  connection.query(query, function(err, res) {
+  connection.query(query, function (err, res) {
     if (err) throw err;
     console.table(res);
-    startScreen();
+    startPrompt();
   });
 }
 
