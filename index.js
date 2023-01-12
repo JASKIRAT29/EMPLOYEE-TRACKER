@@ -1,17 +1,17 @@
 const inquirer = require('inquirer');
 // Import and require mysql2
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cTable = require('console.table');
 
 // Connect to database
-const db = mysql.createConnection(
+const connection = mysql.createConnection(
     {
       host: 'localhost',
       // MySQL username,
       user: 'root',
       // TODO: Add MySQL password here
-      password: 'password',
-      database: 'employee_trackerdb'
+      password: 'Thechamp@1',
+      database: 'employee_db'
     },
     console.log(`Connected to the employee_trackerdb database.`)
   );

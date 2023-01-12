@@ -1,5 +1,24 @@
 {
+  "name": "module-12-employee-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JASKIRAT29/EMPLOYEE-TRACKER.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JASKIRAT29/EMPLOYEE-TRACKER/issues"
+  },
+  "homepage": "https://github.com/JASKIRAT29/EMPLOYEE-TRACKER#readme",
   "dependencies": {
-    "inquirer": "^8.2.4"
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
+    "mysql2": "^2.1.0"
   }
 }
